@@ -14,12 +14,16 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Topic.hasMany(models.Banner, {
       foreignKey: "topicsId",
-      as: "Banners",
+      as: "banners",
     });
     Topic.hasMany(models.Post, {
       foreignKey: "topicId",
       as: "posts"
     });
+    Topic.hasMany(models.Flair, {
+       foreignKey: "topicId",
+       as: "flairs"
+     });
   };
   return Topic;
 };
