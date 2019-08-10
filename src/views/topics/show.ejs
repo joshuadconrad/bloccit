@@ -12,12 +12,11 @@
     <h1><%= topic.title %></h1>
 
     <a href="/topics/<%= topic.id %>/edit" class="btn btn-warning">Edit</a>
-    <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-success">New Post</a>
-
 
     <form style="display:initial" action="/topics/<%= topic.id %>/destroy" method="post">
       <button type="submit" class="btn btn-danger">Delete</button>
     </form>
+    <a href="/topics" class="btn btn-secondary">Cancel</a>
     <p><%= topic.description %></p>
     <p>
     <span><strong>Flairs: <strong></span>
@@ -30,6 +29,9 @@
     <hr>
 
     <h1>Posts</h1>
+
+    <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-success">New Post</a>
+
 
     <ul class="list-group">
       <% topic.posts.forEach((post) => { %>

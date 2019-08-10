@@ -49,6 +49,67 @@ describe("routes : topics", () => {
     });
   });
 
+  describe("POST /topics/create", () => {
+
+    it("should create a new Topic and redirect", (done) => {
+      const options = {
+        url: `${base}create`,
+        form: {
+          title: "Test Topic Title",
+          description: "Test topic description."
+        }
+      };
+      request.post(options,
+        (err, res, body) => {
+
+          Topic.findOne({
+              where: {
+                title: "Test Topic Title"
+              }
+            })
+            .then((topic) => {
+              expect(topic.title).toBe("Test Topic Title");
+              expect(topic.description).toBe("Test topic description.");
+              done();
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            });
+        }
+      );
+    });
+
+    it("should not create a new topic that fails validations", (done) => {
+      const options = {
+        url: `${base}create`,
+        form: {
+          title: "a",
+          description: "b"
+        }
+      };
+
+      request.post(options,
+        (err, res, body) => {
+          Topic.findOne({
+              where: {
+                title: "a"
+              }
+            })
+            .then((topic) => {
+              expect(topic).toBeNull();
+              done();
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            });
+        }
+      );
+    });
+
+  });
+
   describe("GET /topics/:id", () => {
 
      it("should render a view with the selected topic", (done) => {
@@ -65,13 +126,13 @@ describe("routes : topics", () => {
 
      it("should delete the topic with the associated ID", (done) => {
 
-       Topic.all()
+       Topic.findAll()
 
        .then((topics) => {
          const topicCountBeforeDelete = topics.length;
          expect(topicCountBeforeDelete).toBe(1);
          request.post(`${base}${this.topic.id}/destroy`, (err, res, body) => {
-           Topic.all()
+           Topic.findAll()
            .then((topics) => {
              expect(err).toBeNull();
              expect(topics.length).toBe(topicCountBeforeDelete - 1);
@@ -103,8 +164,8 @@ describe("routes : topics", () => {
        const options = {
           url: `${base}${this.topic.id}/update`,
           form: {
-            title: "JavaScript Frameworks",
-            description: "There are a lot of them"
+            title: "Updated Title",
+            description: "Updated description."
           }
         };
 
@@ -117,7 +178,7 @@ describe("routes : topics", () => {
             where: { id: this.topic.id }
           })
           .then((topic) => {
-            expect(topic.title).toBe("JavaScript Frameworks");
+            expect(topic.title).toBe("Updated Title");
             done();
           });
         });

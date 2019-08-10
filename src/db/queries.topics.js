@@ -5,7 +5,7 @@ const Flair = require("./models").Flair;
 module.exports = {
 
   getAllTopics(callback) {
-    return Topic.all()
+    return Topic.findAll()
       .then((topics) => {
         callback(null, topics);
       })
@@ -15,7 +15,7 @@ module.exports = {
   },
 
   getTopic(id, callback) {
-    return Topic.findById(id, {
+    return Topic.findByPk(id, {
         include: [{
           model: Post,
           as: "posts"
@@ -61,7 +61,7 @@ module.exports = {
   },
 
   updateTopic(id, updatedTopic, callback) {
-    return Topic.findById(id)
+    return Topic.findByPk(id)
       .then((topic) => {
         if (!topic) {
           return callback("Topic not found");

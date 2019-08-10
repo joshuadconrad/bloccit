@@ -13,7 +13,7 @@ module.exports = {
   },
 
   getPost(id, callback) {
-    return Post.findById(id)
+    return Post.findByPk(id)
       .then((post) => {
         callback(null, post);
       })
@@ -37,7 +37,7 @@ module.exports = {
   },
 
   updatePost(id, updatedPost, callback) {
-    return Post.findById(id)
+    return Post.findByPk(id)
       .then((post) => {
         if (!post) {
           return callback("Post not found");

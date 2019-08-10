@@ -106,7 +106,7 @@ describe("routes : flairs", () => {
     it("should delete the flair with the associated ID", (done) => {
       request.post(`${base}${this.topic.id}/flairs/${this.flair.id}/destroy`, (err, res, body) => {
         expect(this.flair.id).toBe(1);
-        Flair.findById(1)
+        Flair.findByPk(1)
           .then((flair) => {
             expect(err).toBeNull();
             expect(flair).toBeNull();

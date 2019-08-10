@@ -13,7 +13,7 @@ module.exports = {
     },
 
     getFlair(id, callback){
-     return Flair.findById(id)
+     return Flair.findByPk(id)
      .then((flair) => {
        callback(null, flair);
      })
@@ -35,7 +35,7 @@ module.exports = {
    },
 
    updateFlair(id, updatedFlair, callback){
-     return Flair.findById(id)
+     return Flair.findByPk(id)
      .then((flair) => {
        if(!flair){
          return callback("Flair was not found");

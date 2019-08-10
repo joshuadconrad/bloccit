@@ -22,6 +22,7 @@
         <textarea rows="4" class="form-control" name="body" placeholder="Enter Description"><%= post.body %></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Update</button>
+      <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>" class="btn btn-secondary">Cancel</a>
     </form>
   </main>
 
