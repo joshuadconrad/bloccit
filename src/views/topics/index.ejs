@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <% include ../static/partials/head.ejs %>
-  </head>
-  <body>
-    <main class="container">
-      <% include ../static/partials/navbar.ejs %>
 
-      <h1>Topics</h1>
+<head>
+  <% include ../static/partials/head.ejs %>
+</head>
 
-      <a href="/topics/new" class="btn btn-success" style="margin-bottom: 20px;">New Topic</a>
+<body>
+  <main class="container">
+    <% include ../static/partials/navbar.ejs %>
 
-      <ul class="list-group">
+    <h1>Topics</h1>
 
-        <% topics.forEach((topic) => { %>
+    <% if(currentUser && currentUser.isAdmin()) { %>
+    <a href="/topics/new" class="btn btn-success">New Topic</a>
+    <% } %>
 
-          <li class="list-group-item">
-            <a href="/topics/<%= topic.id %>"> <%= topic.title %> </a>
-          </li>
-        <% }) %>
-      </ul>
+    <ul class="list-group">
 
-    </main>
-    <% include ../static/partials/baseScripts.ejs %>
-  </body>
+      <% topics.forEach((topic) => { %>
+
+      <li class="list-group-item">
+        <a href="/topics/<%= topic.id %>"> <%= topic.title %> </a>
+      </li>
+      <% }) %>
+    </ul>
+
+  </main>
+  <% include ../static/partials/baseScripts.ejs %>
+</body>
+
 </html>
