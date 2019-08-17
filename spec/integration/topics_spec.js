@@ -6,6 +6,28 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const User = require("../../src/db/models").User;
 
+function authorizeUser(role, done) {
+  User.create({
+    email: "#{role}@example.com",
+    password: "123456",
+    role: role
+  })
+  .then((user) => {
+    request.get({
+      url: "http://localhost:3000/auth/fake",
+      form: {
+        role: user.role,
+        userId: user.id,
+        email: user.email
+      }
+    },
+      (err, res, body) => {
+        done();
+      }
+    );
+  });
+}
+
 describe("routes : topics", () => {
   beforeEach(done => {
     this.topic;
@@ -28,26 +50,9 @@ describe("routes : topics", () => {
   });
 
   describe("admin user performing CRUD actions for Topic", () => {
+    
     beforeEach((done) => {
-      User.create({
-          email: "admin@example.com",
-          password: "123456",
-          role: "admin"
-        })
-        .then((user) => {
-          request.get({
-              url: "http://localhost:3000/auth/fake",
-              form: {
-                role: user.role,
-                userId: user.id,
-                email: user.email
-              }
-            },
-            (err, res, body) => {
-              done();
-            }
-          );
-        });
+      authorizeUser("admin", done);
     });
 
     describe("GET /topics", () => {
@@ -218,16 +223,7 @@ describe("routes : topics", () => {
   // context of member user
   describe("member user performing CRUD actions for Topic", () => {
     beforeEach((done) => {
-      request.get({
-          url: "http://localhost:3000/auth/fake",
-          form: {
-            role: "member"
-          }
-        },
-        (err, res, body) => {
-          done();
-        }
-      );
+      authorizeUser("member", done);
     });
 
     describe("GET /topics", () => {

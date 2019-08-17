@@ -22,18 +22,27 @@ module.exports = {
       })
   },
 
-  deletePost(id, callback) {
-    return Post.destroy({
-        where: {
-          id
+  deletePost(req, callback) {
+    return Post.findByPk(req.params.id)
+      .then((post) => {
+        const authorized = new Authorizer(req.user, post).destroy();
+        if (authorized) {
+          post.destroy({
+              where: {
+                req
+              }
+            })
+            .then((req) => {
+              callback(null, post);
+            })
+        } else {
+          req.flash("notice", "You are not authorized to do that.")
+          callback(401);
         }
-      })
-      .then((deletedRecordsCount) => {
-        callback(null, deletedRecordsCount);
       })
       .catch((err) => {
         callback(err);
-      })
+      });
   },
 
   updatePost(id, updatedPost, callback) {
@@ -42,16 +51,21 @@ module.exports = {
         if (!post) {
           return callback("Post not found");
         }
-
-        post.update(updatedPost, {
-            fields: Object.keys(updatedPost)
-          })
-          .then(() => {
-            callback(null, post);
-          })
-          .catch((err) => {
-            callback(err);
-          });
+        const authorized = new Authorizer(req.user, post).update();
+        if (authorized) {
+          post.update(updatedPost, {
+              fields: Object.keys(updatedPost)
+            })
+            .then(() => {
+              callback(null, post);
+            })
+            .catch((err) => {
+              callback(err);
+            });
+        } else {
+          req.flash("notice", "You are not authorized to do that.");
+          callback("Forbidden");
+        }
       });
   }
 }
