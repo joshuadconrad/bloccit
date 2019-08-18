@@ -13,6 +13,7 @@ module.exports = {
       }
     })
   },
+  
   new(req, res, next) {
     const authorized = new Authorizer(req.user).new();
     if (authorized) {
@@ -22,6 +23,7 @@ module.exports = {
       res.redirect("/topics");
     }
   },
+
   create(req, res, next) {
     const authorized = new Authorizer(req.user).create();
     if (authorized) {

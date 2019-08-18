@@ -340,7 +340,7 @@ describe("routes : posts", () => {
           Post.findByPk(1)
             .then((post) => {
               expect(err).toBeNull();
-              expect(post).toContain("Snowball Fighting");
+              expect(post.title).toBe("Snowball Fighting");
               done();
             })
         });
