@@ -203,8 +203,6 @@ describe("routes : posts", () => {
             body: "I really enjoy the funny hats on them."
           }
         }, (err, res, body) => {
-          console.log(body);
-          console.log(err);
           expect(res.statusCode).toBe(302);
           done();
         });
