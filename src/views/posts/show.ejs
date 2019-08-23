@@ -9,7 +9,14 @@
   <% include ../static/partials/navbar.ejs %>
 
   <main class="container">
+    <% include ../static/partials/breadcrumbPosts.ejs %>
+
     <h1><%= post.title %></h1>
+    <div style="display: flex; align-items:center;">
+      <% if(currentUser) { %>
+      <% include ../votes/voting.ejs %>
+      <% } %>
+    </div>
     <% if(currentUser) { %>
     <% if(currentUser.isAdmin() || (currentUser.id === post.userId)) { %>
     <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
@@ -17,7 +24,6 @@
       <button type="submit" class="btn btn-danger">Delete</button>
       <% } %>
       <% } %>
-      <a href="/topics/<%= post.topicId %>" class="btn btn-secondary">Cancel</a>
     </form>
     <p><%= post.body %></p>
 

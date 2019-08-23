@@ -1,0 +1,8 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/topics">Topics</a></li>
+    <li class="breadcrumb-item"><a href="/topics/<%= post.topicId %>"><%= post.topicId %></a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="/topics/<%= post.topicId %>/posts/<%= post.id %>"><%= post.title %></a></li>
+  </ol>
+</nav>

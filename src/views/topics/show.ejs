@@ -9,8 +9,10 @@
   <% include ../static/partials/navbar.ejs %>
 
   <main class="container">
+    <% include ../static/partials/breadcrumbTopics.ejs %>
+
     <h1><%= topic.title %></h1>
-    
+
     <% if(currentUser) { %>
     <% if(currentUser.isAdmin()) { %>
     <a href="/topics/<%= topic.id %>/edit" class="btn btn-warning">Edit</a>
@@ -20,7 +22,6 @@
     </form>
     <% } %>
     <% } %>
-    <a href="/topics" class="btn btn-secondary">Cancel</a>
     <p><%= topic.description %></p>
     <p>
       <span><strong>Flairs: <strong></span>

@@ -1,0 +1,9 @@
+<div class="pull-left" style="width: 80px;text-align: center;">
+  <div style="display: inline-block;">
+    <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/votes/downvote"><ion-icon name="thumbs-down" style="color: grey; padding: 0 5px;"></ion-icon></a>
+  </div>
+  <b><%= post.getPoints() %></b>
+  <div style="display: inline-block;">
+    <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/votes/upvote"><ion-icon name="thumbs-up" style="color: grey; padding: 0 5px;"></ion-icon></a>
+  </div>
+</div>
