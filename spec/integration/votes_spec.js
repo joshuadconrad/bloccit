@@ -144,6 +144,50 @@ describe("routes : votes", () => {
         );
       });
 
+      it("should not create more than one upvote per user", (done) => {
+        const options = {
+          url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
+        };
+        request.get(options,
+          (err, res, body) => {
+            Vote.findOne({
+                where: {
+                  userId: this.user.id,
+                  postId: this.post.id
+                }
+              })
+              .then((vote) => {
+                expect(vote).not.toBeNull();
+                expect(vote.value).toBe(1);
+                expect(vote.userId).toBe(this.user.id);
+                expect(vote.postId).toBe(this.post.id);
+              })
+              .then(() => {
+                request.get(options,
+                  (err, res, body) => {
+                    Vote.findOne({
+                        where: {
+                          userId: this.user.id,
+                          postId: this.post.id
+                        }
+                      })
+                      .then((vote) => {
+                        expect(vote).not.toBeNull();
+                        expect(vote.value).toBe(1);
+                        expect(vote.userId).toBe(this.user.id);
+                        expect(vote.postId).toBe(this.post.id);
+                        done();
+                      })
+                  })
+              })
+              .catch((err) => {
+                console.log(err);
+                done();
+              });
+          }
+        );
+      });
+
     });
 
     describe("GET /topics/:topicId/posts/:postId/votes/downvote", () => {
@@ -166,6 +210,101 @@ describe("routes : votes", () => {
                 expect(vote.userId).toBe(this.user.id);
                 expect(vote.postId).toBe(this.post.id);
                 done();
+              })
+              .catch((err) => {
+                console.log(err);
+                done();
+              });
+          }
+        );
+      });
+
+      it("should not create more than one downvote per user", (done) => {
+        const options = {
+          url: `${base}${this.topic.id}/posts/${this.post.id}/votes/downvote`
+        };
+        request.get(options,
+          (err, res, body) => {
+            Vote.findOne({
+                where: {
+                  userId: this.user.id,
+                  postId: this.post.id
+                }
+              })
+              .then((vote) => {
+                expect(vote).not.toBeNull();
+                expect(vote.value).toBe(-1);
+                expect(vote.userId).toBe(this.user.id);
+                expect(vote.postId).toBe(this.post.id);
+              })
+              .then(() => {
+                request.get(options,
+                  (err, res, body) => {
+                    Vote.findOne({
+                        where: {
+                          userId: this.user.id,
+                          postId: this.post.id
+                        }
+                      })
+                      .then((vote) => {
+                        expect(vote).not.toBeNull();
+                        expect(vote.value).toBe(-1);
+                        expect(vote.userId).toBe(this.user.id);
+                        expect(vote.postId).toBe(this.post.id);
+                        done();
+                      })
+                  })
+              })
+              .catch((err) => {
+                console.log(err);
+                done();
+              });
+          }
+        );
+      });
+
+    });
+
+    describe("GET /topics/:topicId/posts/:postId/votes/upvote||downvote", () => {
+
+      it("should create a vote and then change the vote", (done) => {
+        var options = {
+          url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
+        };
+        request.get(options,
+          (err, res, body) => {
+            Vote.findOne({
+                where: {
+                  userId: this.user.id,
+                  postId: this.post.id
+                }
+              })
+              .then((vote) => {
+                expect(vote).not.toBeNull();
+                expect(vote.value).toBe(1);
+                expect(vote.userId).toBe(this.user.id);
+                expect(vote.postId).toBe(this.post.id);
+              })
+              .then(() => {
+                options = {
+                  url: `${base}${this.topic.id}/posts/${this.post.id}/votes/downvote`
+                }
+                request.get(options,
+                  (err, res, body) => {
+                    Vote.findOne({
+                        where: {
+                          userId: this.user.id,
+                          postId: this.post.id
+                        }
+                      })
+                      .then((vote) => {
+                        expect(vote).not.toBeNull();
+                        expect(vote.value).toBe(-1);
+                        expect(vote.userId).toBe(this.user.id);
+                        expect(vote.postId).toBe(this.post.id);
+                        done();
+                      })
+                  })
               })
               .catch((err) => {
                 console.log(err);
